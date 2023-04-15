@@ -124,7 +124,7 @@ async def RequestUrl(config, init):
     else:
         if config.Following:
             logme.debug(__name__ + ':RequestUrl:Following')
-            _url = await url.Following(config.Username, init)
+            _url = await url.Following(config.Username, config.Graphql_id, init)
         elif config.Followers:
             logme.debug(__name__ + ':RequestUrl:Followers')
             _url = await url.Followers(config.Username, init)
@@ -133,7 +133,7 @@ async def RequestUrl(config, init):
             _url = await url.Favorites(config.Username, init)
         _serialQuery = _url
 
-    response = await Request(_url, params=params, connector=_connector, headers=_headers)
+    response = await Request(_url, params=params, connector=_connector, headers=_headers, cookies=config.Cookies)
 
     if config.Debug:
         print(_serialQuery, file=open("twint-request_urls.log", "a", encoding="utf-8"))
@@ -156,9 +156,9 @@ def ForceNewTorIdentity(config):
         sys.stderr.write('If you want to rotate Tor ports automatically - enable Tor control port\n')
 
 
-async def Request(_url, connector=None, params=None, headers=None):
+async def Request(_url, connector=None, params=None, headers=None, cookies=None):
     logme.debug(__name__ + ':Request:Connector')
-    async with aiohttp.ClientSession(connector=connector, headers=headers) as session:
+    async with aiohttp.ClientSession(connector=connector, headers=headers, cookies=cookies) as session:
         return await Response(session, _url, params)
 
 

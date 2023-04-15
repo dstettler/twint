@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 mobile = "https://mobile.twitter.com"
 base = "https://api.twitter.com/2/search/adaptive.json"
-
+graphql = "https://twitter.com/i/api/graphql"
 
 def _sanitizeQuery(_url, params):
     _serialQuery = ""
@@ -43,9 +43,11 @@ async def Followers(username, init):
     return url
 
 
-async def Following(username, init):
+async def Following(username, graphql_id, user_id,  init):
     logme.debug(__name__ + ':Following')
-    url = f"{mobile}/{username}/following?lang=en"
+    variables = f'"userId":"{username}","count":20,"includePromotedContent":false'
+    features = '"blue_business_profile_image_shape_enabled":true,"responsive_web_graphql_exclude_directive_enabled":true,"verified_phone_label_enabled":false,"responsive_web_graphql_timeline_navigation_enabled":true,"responsive_web_graphql_skip_user_profile_image_extensions_enabled":false,"tweetypie_unmention_optimization_enabled":true,"vibe_api_enabled":true,"responsive_web_edit_tweet_api_enabled":true,"graphql_is_translatable_rweb_tweet_is_translatable_enabled":true,"view_counts_everywhere_api_enabled":true,"longform_notetweets_consumption_enabled":true,"tweet_awards_web_tipping_enabled":false,"freedom_of_speech_not_reach_fetch_enabled":false,"standardized_nudges_misinfo":true,"tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled":false,"interactive_text_enabled":true,"responsive_web_text_conversations_enabled":false,"longform_notetweets_rich_text_read_enabled":true,"responsive_web_enhance_cards_enabled":false'
+    url = f"{graphql}/{graphql_id}/Following?variables={{{variables}}}&features={{{features}}}"
 
     if init != '-1':
         url += f"&cursor={init}"

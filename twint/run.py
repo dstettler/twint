@@ -69,6 +69,11 @@ class Twint:
                 print(response, file=open("twint-last-request.log", "w", encoding="utf-8"))
 
             self.feed = []
+
+            if self.config.Following:
+                self.feed.insert(response)
+                break
+
             try:
                 if self.config.Favorites:
                     self.feed, self.init = feed.MobileFav(response)

@@ -4,6 +4,8 @@ from typing import Optional
 @dataclass
 class Config:
     Username: Optional[str] = None
+    Graphql_id: Optional[str] = None
+    Cookies: Optional[dict] = None
     User_id: Optional[str] = None
     Search: Optional[str] = None
     Lookup: bool = False
