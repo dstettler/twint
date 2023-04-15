@@ -1,10 +1,12 @@
-FROM python:3.6-buster
+FROM python:3.11-buster
 LABEL maintainer="codyzacharias@pm.me"
 
 WORKDIR /root
 
-RUN git clone --depth=1 https://github.com/twintproject/twint.git && \
-	cd /root/twint && \
-	pip3 install . -r requirements.txt
+ADD . /root/twint
+
+RUN cd /root/twint && \
+	pip3 install -r requirements.txt && \
+	pip3 install ./
 
 CMD /bin/bash
